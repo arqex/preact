@@ -5,6 +5,7 @@ import { enqueueRender } from '../render-queue';
 import { getNodeProps } from './index';
 import { diff, mounts, diffLevel, flushMounts, recollectNodeTree, removeChildren } from './diff';
 import { createComponent, collectComponent } from './component-recycler';
+import { isSameComponent } from './component-comparator';
 import { removeNode } from '../dom/index';
 
 /** Set a component's `props` (generally derived from JSX attributes).
@@ -203,11 +204,11 @@ export function buildComponentFromVNode(dom, vnode, context, mountAll) {
 	let c = dom && dom._component,
 		originalComponent = c,
 		oldDom = dom,
-		isDirectOwner = c && dom._componentConstructor===vnode.nodeName,
+		isDirectOwner = c && isSameComponent(dom, vnode),
 		isOwner = isDirectOwner,
 		props = getNodeProps(vnode);
 	while (c && !isOwner && (c=c._parentComponent)) {
-		isOwner = c.constructor===vnode.nodeName;
+		isOwner = isSameComponent(c.base, vnode);
 	}
 
 	if (c && isOwner && (!mountAll || c._component)) {

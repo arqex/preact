@@ -1,6 +1,7 @@
 import { h, h as createElement } from './h';
 import { cloneElement } from './clone-element';
 import { Component } from './component';
+import { setComponentComparator } from './vdom/component-comparator';
 import { render } from './render';
 import { rerender } from './render-queue';
 import options from './options';
@@ -12,7 +13,8 @@ export default {
 	Component,
 	render,
 	rerender,
-	options
+	options,
+	setComponentComparator
 };
 
 export {
@@ -22,5 +24,6 @@ export {
 	Component,
 	render,
 	rerender,
-	options
+	options,
+	setComponentComparator
 };
